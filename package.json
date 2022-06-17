@@ -1,0 +1,27 @@
+{
+  "name": "challenge-gold-binaracademy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milhamramadhan17/Challenge-Gold-BinarAcademy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/milhamramadhan17/Challenge-Gold-BinarAcademy/issues"
+  },
+  "homepage": "https://github.com/milhamramadhan17/Challenge-Gold-BinarAcademy#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
