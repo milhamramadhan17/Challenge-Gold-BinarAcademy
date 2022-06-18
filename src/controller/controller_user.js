@@ -19,7 +19,7 @@ controller.getAll = async (req, res) => {
     }
 }
 
-controller.addUser = async (req, res) => {
+controller.register = async (req, res) => {
     const User = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -28,13 +28,51 @@ controller.addUser = async (req, res) => {
         createdAt: new Date(),
         updateAt: new Date()
     }
+
     try {
-        await Users.create(User)
-        .then ((results) => {
-            res.status(401).send("Berhasil register")
+        await Users.findOne({
+            where: {
+                email: User.email
+            }
         })
+        .then(results => {
+            if(results) {
+                res.send("User already in database")
+            } else {
+                Users.create(User)
+                .then (() => {
+                    res.status(401).send("Berhasil register")
+        })
+            }
+        })
+        
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send("error")
+    }
+}
+
+controller.login = async (req, res) => {
+    const email = req.body.email
+    const pass = req.body.pass
+
+    try {
+        await Users.findOne({
+            where: {
+                email: email,
+                pass: pass
+            }
+        })
+        .then(results => {
+            if(results) {
+                res.send("Login's successfully");
+            } else {
+                res.status(404).send({
+                    message: `Cannot find User.`
+                })
+            } 
+        });
+    } catch (error) {
+        
     }
 }
 
@@ -58,5 +96,37 @@ controller.getUserById = async (req, res) => {
     }
 }
 
+//  controller.updateName = async (req, res) => {
+//      const id = req.params.id;
+//      const firstName = req.body.firstName;
+//      const lastName = req.body.lastName;
+   
+//     try {
+//         await Users.update({lastName: lastName}, {
+//             where: {
+//                 id: id,
+//                 lastName: lastName
+//             }
+//         })
+//         .then(() => res.status(203).send("Updated is successfully"))
+//     } catch (error) {
+//         res.status(404).send("Update is error")
+//     }
+//  }
+
+controller.DeleteUser = async (req, res) => {
+    const id = req.params.id;
+    try {
+        await Users.destroy({
+            where: {
+                id: id
+            }
+        })
+        .then(() => res.status(204).send("Delete user's successfully"))
+    } catch (error) {
+        res.status(400).send("error")
+    }
+    
+}
 
 module.exports = controller;
