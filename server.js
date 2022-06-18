@@ -1,28 +1,17 @@
 const express = require('express');
-const routerUsers = require('./src/route/routeUsers');
-
-
 const app = express();
-const port = 3000;
-
-
-const longger = (req, res, next) => {
-    console.log(req.method, req.url);
-    next();
-}
-
-app.use(longger);
+const db = require("./models")
+const router = require('./src/route/Users')
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/v1/user", routerUsers)
+app.get('/', (req, res) => {
+    res.json({msg: "Welcome to my home."});
+})
 
-
-
-
-
-app.listen(port, () => console.log(`app listen on port ${port}`));
-
-module.exports = app;
+app.use('/api/user', router)
 
 
+app.listen(port, () => {console.log(`Server is running on port ${port}`)})
