@@ -4,6 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "migrate": "npx sequelize-cli db:migrate",
+    "make-model": "npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
@@ -19,9 +21,12 @@
   "homepage": "https://github.com/milhamramadhan17/Challenge-Gold-BinarAcademy#readme",
   "dependencies": {
     "express": "^4.18.1",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.21.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "sequelize-cli": "^6.4.1"
   }
 }

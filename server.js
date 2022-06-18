@@ -15,11 +15,6 @@ app.use(longger);
 
 app.use(express.json());
 
-
-app.get("/", (req, res) => {
-    res.send("Hello Worldqqqq")
-})
-
 app.use("/api/v1/user", routerUsers)
 
 
