@@ -1,6 +1,6 @@
-const db = require("../../models");
-const Items = db.Items;
-const Op = db.Sequelize.Op;
+const db         = require("../../models");
+const Items      = db.Items;
+const Op         = db.Sequelize.Op;
 const controller = {};
 
 controller.getAll = async (req, res) => {
@@ -11,18 +11,18 @@ controller.getAll = async (req, res) => {
         .then(results => {
             res.send(results)
         })
-    } catch (error) {
+    } catch (err) {
         res.status(500).send({
             message:
-              err.message || "Some error occurred while retrieving tutorials."
+              err.message || "Some error occurred while retrieving items."
           });
     }
 }
 
 controller.addProduct = async (req, res) => {
     const item = {
-        product: req.body.product,
-        price: req.body.price
+        product : req.body.product,
+        price   : req.body.price
     }
 
     try {
@@ -35,9 +35,9 @@ controller.addProduct = async (req, res) => {
             if(results) {
                 res.send("Product already in database")
             } else {
-                Users.create(item)
+                Items.create(item)
                 .then (() => {
-                    res.status(401).send("Berhasil register")
+                    res.status(201).send("Berhasil register")
         })
             }
         })
@@ -74,12 +74,21 @@ controller.getItemById = async (req, res) => {
 controller.DeleteItem = async (req, res) => {
     const id = req.params.id;
     try {
-        await Items.destroy({
-            where: {
-                id: id
+        await Items.findByPk(id)
+        .then(results => {
+            if(results) {
+                Items.destroy({
+                    where: {
+                        id:id
+                    }
+                })
+                .then((results) => {
+                    res.status(204).send("delete is successfully")
+                })
+            } else {
+                res.send("There's not data")
             }
         })
-        .then(() => res.status(204).send("Delete Item's successfully"))
     } catch (error) {
         res.status(400).send("error")
     }

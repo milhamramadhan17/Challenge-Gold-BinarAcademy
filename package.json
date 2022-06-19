@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "migrate-undo": "npx sequelize-cli db:migrate:undo",
     "seed-migrate": "npx sequelize-cli db:seed:all",
     "make-seeders": "npx sequelize-cli seed:generate --name demo-user",
     "migrate": "npx sequelize-cli db:migrate",
