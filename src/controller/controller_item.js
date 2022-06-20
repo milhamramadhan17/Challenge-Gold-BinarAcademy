@@ -67,9 +67,24 @@ controller.getItemById = async (req, res) => {
     }
 }
 
-// controller.updatedItems = async (req, res) => {
-
-// }
+controller.updateItem = async (req, res) => {
+    try {
+         await Items.update(req.body, {
+             where: {
+                 id: req.params.id
+             }
+         });
+         return res.status(203).json(
+             {
+                 "message": "Updated Successfully"
+         });
+    } catch (err){
+        res.status(404).send({
+             message:
+             err.message || "There's something wrong"
+        })
+    }
+ }
 
 controller.DeleteItem = async (req, res) => {
     const id = req.params.id;

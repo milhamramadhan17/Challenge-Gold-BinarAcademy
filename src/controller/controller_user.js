@@ -46,8 +46,11 @@ controller.register = async (req, res) => {
             }
         })
         
-    } catch (error) {
-        res.status(500).send("error")
+    } catch (err) {
+        res.status(500).send({
+            message:
+            err.message || "There's something wrong"
+        })
     }
 }
 
@@ -71,13 +74,17 @@ controller.login = async (req, res) => {
                 })
             } 
         });
-    } catch (error) {
-        
+    } catch (err) {
+        res.status(500).send({
+            message:
+            err.message || "There's something wrong"
+        })
     }
 }
 
 controller.getUserById = async (req, res) => {
     const id = req.params.id;
+
     try {
         await Users.findByPk(id)
         .then(results => {
@@ -89,39 +96,32 @@ controller.getUserById = async (req, res) => {
                 });
             };
         });
-    } catch (error) {
+    } catch (err) {
         res.status(500).send({
-            message: "Error retrieving User with id=" + id
+            message:
+            err.message || "Error retrieving User with id=" + id
           });
     }
 }
 
-// controller.updateName = async (req, res) => {
-//     const firstName = req.body.firstName;
-//     const lastName = req.body.lastName;
-   
-//    try {
-//        await Users.findByPk(req.params.id, {
-//         include: [{
-//             model: Users,
-//             as: "Users"
-//         }],
-//        })
-//        .then(Users => {
-//         if (!Users) {
-//             return res.status(404).send("User Not Found")
-//         }
-//         return Users.update({
-//             firstName: firstName,
-//             lastName: lastName
-//         })
-//         .then(() => res.status(200).send(Users))
-//         .catch((error) => res.status(400).send(error))
-//        })
-//    } catch (error) {
-//        res.status(404).send("Update is error")
-//    }
-// }
+controller.updateUser = async (req, res) => {
+   try {
+        await Users.update(req.body, {
+            where: {
+                id: req.params.id
+            }
+        });
+        return res.status(203).json(
+            {
+                "message": "Updated Successfully"
+        });
+   } catch (err){
+       res.status(404).send({
+            message:
+            err.message || "There's something wrong"
+       })
+   }
+}
 
 controller.DeleteUser = async (req, res) => {
     const id = req.params.id;
@@ -135,8 +135,8 @@ controller.DeleteUser = async (req, res) => {
                     }
                 })
                 .then((results) => {
-                    res.status(204).send({
-                        delete: results
+                    res.send({
+                        message: "Delete successfully"  
                     })
                 })
             } else {
@@ -144,8 +144,11 @@ controller.DeleteUser = async (req, res) => {
             }
         })
 
-    } catch (error) {
-        res.status(400).send("error")
+    } catch (err) {
+        res.status(400).send({
+            message:
+            err.message || "There's something wrong"
+        })
     }
     
 }

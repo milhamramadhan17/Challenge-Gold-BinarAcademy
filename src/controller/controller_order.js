@@ -1,5 +1,4 @@
 const db = require("../../models");
-const Users = db.Users;
 const Items = db.Items;
 const Orders = db.Orders;
 const Op = db.Sequelize.Op;
@@ -18,7 +17,7 @@ controller.getAll = async (req, res) => {
     } catch (error) {
         res.status(500).send({
             message:
-              err.message || "Some error occurred while retrieving tutorials."
+              err.message || "Some error occurred while retrieving orders."
           });
     }
 }
@@ -70,9 +69,24 @@ controller.getOrderById = async (req, res) => {
     }
 }
 
-// controller.updateOrder = async (req, res) => {
-
-// }
+controller.updateOrder = async (req, res) => {
+    try {
+         await Orders.update(req.body, {
+             where: {
+                 id: req.params.id
+             }
+         });
+         return res.status(203).json(
+             {
+                 "message": "Updated Successfully"
+         });
+    } catch (err){
+        res.status(404).send({
+             message:
+             err.message || "There's something wrong"
+        })
+    }
+ }
 
 controller.DeleteOrder = async (req, res) => {
     const id = req.params.id;
@@ -95,8 +109,11 @@ controller.DeleteOrder = async (req, res) => {
             }
         })
 
-    } catch (error) {
-        res.status(400).send("error")
+    } catch (err) {
+        res.status(400).send({
+            message:
+            err.message || "There is something wrong"
+        })
     }
     
 }
