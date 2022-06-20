@@ -71,11 +71,23 @@ controller.getOrderById = async (req, res) => {
 
 controller.updateOrder = async (req, res) => {
     try {
-         await Orders.update(req.body, {
+        const orderItem = await Items.findOne({
+            where: {
+                 id: req.body.id_product
+            }
+        })
+        const order = {
+            id_product  : req.body.id_product,
+            id_users    : req.body.id_users,
+            qty         : req.body.qty,
+            amount      : req.body.qty * orderItem.dataValues.price
+        }
+         await Orders.update(order,{
              where: {
                  id: req.params.id
              }
          });
+         
          return res.status(203).json(
              {
                  "message": "Updated Successfully"
@@ -100,9 +112,7 @@ controller.DeleteOrder = async (req, res) => {
                     }
                 })
                 .then((results) => {
-                    res.status(204).send({
-                        delete: results
-                    })
+                    res.send("Delete Successfully")
                 })
             } else {
                 res.send("There's not data")
